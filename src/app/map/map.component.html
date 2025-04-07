@@ -1,0 +1,86 @@
+<div class="app-container">
+    <!-- Panneau latéral pour les contrôles -->
+    <div class="sidebar">
+      <h2>Navigation</h2>
+      
+      <!-- Formulaire de recherche d'itinéraire -->
+      <div class="search-section">
+        <h3>Rechercher un itinéraire</h3>
+        <form (ngSubmit)="calculateRoute()">
+          <div class="form-group">
+            <label for="destination">Destination:</label>
+            <div class="autocomplete-container">
+              <input 
+                type="text" 
+                id="destination" 
+                [(ngModel)]="destinationInput" 
+                name="destination" 
+                placeholder="Saisissez une adresse" 
+                (input)="onSearchInput()"
+                required
+                class="form-control">
+              
+              <!-- Suggestions d'autocomplétion -->
+              <div class="autocomplete-results" *ngIf="autocompleteSuggestions.length > 0">
+                <div 
+                  *ngFor="let suggestion of autocompleteSuggestions" 
+                  (click)="selectAutocompleteSuggestion(suggestion)"
+                  class="autocomplete-item">
+                  {{ suggestion.displayName }}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Calculer l'itinéraire</button>
+            <button type="button" class="btn btn-danger" *ngIf="routingControl" (click)="clearRoute()">Effacer</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Historique de recherche -->
+      <div class="history-section">
+        <h3>Historique de recherche</h3>
+        <div *ngIf="searchHistory.length === 0" class="empty-history">
+          Aucun historique disponible
+        </div>
+        <ul *ngIf="searchHistory.length > 0" class="history-list">
+          <li *ngFor="let item of searchHistory" (click)="loadFromHistory(item)" class="history-item">
+            <span class="history-text">{{ item.displayName }}</span>
+            <button class="btn-icon" (click)="$event.stopPropagation(); removeFromHistory(item)">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </li>
+        </ul>
+        <button *ngIf="searchHistory.length > 0" class="btn btn-outline" (click)="clearHistory()">
+          Effacer l'historique
+        </button>
+      </div>
+      
+      <!-- Position actuelle -->
+      <div class="location-section">
+        <h3>Localisation</h3>
+        <div class="form-group">
+          <div class="toggle-container">
+            <label for="tracking-toggle">Suivi en temps réel</label>
+            <label class="toggle">
+              <input type="checkbox" id="tracking-toggle" [(ngModel)]="trackingEnabled" (change)="toggleLocationTracking()">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <button type="button" class="btn btn-secondary" (click)="refreshUserLocation()">
+            Actualiser ma position
+          </button>
+          <div class="coordinates-display" *ngIf="userLatLng">
+            <small>Lat: {{userLatLng.lat.toFixed(6)}}, Lng: {{userLatLng.lng.toFixed(6)}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Conteneur de carte -->
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+  </div>
