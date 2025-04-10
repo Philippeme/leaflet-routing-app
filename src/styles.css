@@ -17,3 +17,68 @@
   .leaflet-top, .leaflet-bottom {
     z-index: 999;
   }
+  
+  /* Styles pour Angular Material */
+  .mat-autocomplete-panel {
+    border-radius: 4px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .mat-option {
+    font-size: 14px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+  }
+  
+  .mat-option.mat-active {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+  }
+  
+  /* Animation pour le survol des marqueurs */
+  @keyframes glow-region {
+    0% {
+      box-shadow: 0 0 5px #4CAF50;
+    }
+    50% {
+      box-shadow: 0 0 15px #4CAF50, 0 0 30px #4CAF50;
+    }
+    100% {
+      box-shadow: 0 0 5px #4CAF50;
+    }
+  }
+  
+  @keyframes glow-cercle {
+    0% {
+      box-shadow: 0 0 5px #FFEB3B;
+    }
+    50% {
+      box-shadow: 0 0 15px #FFEB3B, 0 0 30px #FFEB3B;
+    }
+    100% {
+      box-shadow: 0 0 5px #FFEB3B;
+    }
+  }
+  
+  @keyframes glow-commune {
+    0% {
+      box-shadow: 0 0 5px #FF5252;
+    }
+    50% {
+      box-shadow: 0 0 15px #FF5252, 0 0 30px #FF5252;
+    }
+    100% {
+      box-shadow: 0 0 5px #FF5252;
+    }
+  }
+  
+  @keyframes glow-center {
+    0% {
+      box-shadow: 0 0 5px #03A9F4;
+    }
+    50% {
+      box-shadow: 0 0 15px #03A9F4, 0 0 30px #03A9F4;
+    }
+    100% {
+      box-shadow: 0 0 5px #03A9F4;
+    }
+  }

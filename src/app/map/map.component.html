@@ -1,86 +1,143 @@
 <div class="app-container">
-    <!-- Panneau latéral pour les contrôles -->
-    <div class="sidebar">
-      <h2>Navigation</h2>
+    <!-- Conteneur de carte -->
+    <div class="map-container">
+      <div id="map"></div>
       
-      <!-- Formulaire de recherche d'itinéraire -->
-      <div class="search-section">
-        <h3>Rechercher un itinéraire</h3>
-        <form (ngSubmit)="calculateRoute()">
-          <div class="form-group">
-            <label for="destination">Destination:</label>
-            <div class="autocomplete-container">
-              <input 
-                type="text" 
-                id="destination" 
-                [(ngModel)]="destinationInput" 
-                name="destination" 
-                placeholder="Saisissez une adresse" 
-                (input)="onSearchInput()"
-                required
-                class="form-control">
-              
-              <!-- Suggestions d'autocomplétion -->
-              <div class="autocomplete-results" *ngIf="autocompleteSuggestions.length > 0">
-                <div 
-                  *ngFor="let suggestion of autocompleteSuggestions" 
-                  (click)="selectAutocompleteSuggestion(suggestion)"
-                  class="autocomplete-item">
-                  {{ suggestion.displayName }}
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Calculer l'itinéraire</button>
-            <button type="button" class="btn btn-danger" *ngIf="routingControl" (click)="clearRoute()">Effacer</button>
-          </div>
-        </form>
-      </div>
-      
-      <!-- Historique de recherche -->
-      <div class="history-section">
-        <h3>Historique de recherche</h3>
-        <div *ngIf="searchHistory.length === 0" class="empty-history">
-          Aucun historique disponible
-        </div>
-        <ul *ngIf="searchHistory.length > 0" class="history-list">
-          <li *ngFor="let item of searchHistory" (click)="loadFromHistory(item)" class="history-item">
-            <span class="history-text">{{ item.displayName }}</span>
-            <button class="btn-icon" (click)="$event.stopPropagation(); removeFromHistory(item)">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </li>
-        </ul>
-        <button *ngIf="searchHistory.length > 0" class="btn btn-outline" (click)="clearHistory()">
-          Effacer l'historique
+      <!-- Boutons de contrôle flottants -->
+      <div class="floating-controls">
+        <button type="button" class="control-btn location-btn" (click)="refreshUserLocation()" title="Actualiser ma position">
+          <i class="fas fa-location-arrow"></i>
+        </button>
+        <button type="button" class="control-btn reset-btn" (click)="resetMap()" title="Réinitialiser la carte">
+          <i class="fas fa-undo"></i>
         </button>
       </div>
       
-      <!-- Position actuelle -->
-      <div class="location-section">
-        <h3>Localisation</h3>
-        <div class="form-group">
-          <div class="toggle-container">
-            <label for="tracking-toggle">Suivi en temps réel</label>
-            <label class="toggle">
-              <input type="checkbox" id="tracking-toggle" [(ngModel)]="trackingEnabled" (change)="toggleLocationTracking()">
-              <span class="slider"></span>
-            </label>
-          </div>
-          <button type="button" class="btn btn-secondary" (click)="refreshUserLocation()">
-            Actualiser ma position
-          </button>
-          <div class="coordinates-display" *ngIf="userLatLng">
-            <small>Lat: {{userLatLng.lat.toFixed(6)}}, Lng: {{userLatLng.lng.toFixed(6)}}</small>
-          </div>
+      <!-- Légende de la carte -->
+      <div class="map-legend">
+        <div class="legend-title">Légende</div>
+        <div class="legend-item">
+          <div class="legend-color region-color"></div>
+          <div>Régions</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color cercle-color"></div>
+          <div>Cercles</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color commune-color"></div>
+          <div>Communes</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color center-color"></div>
+          <div>Centres d'état civil</div>
         </div>
       </div>
     </div>
   
-    <!-- Conteneur de carte -->
-    <div class="map-container">
-      <div id="map"></div>
+    <!-- Panneau de filtrage (côté droit) -->
+    <div class="filter-panel">
+      <h2>Filtrer les actes d'état civil</h2>
+      
+      <!-- Filtre région -->
+      <div class="filter-group">
+        <label for="region-filter">Région</label>
+        <div class="filter-input-container">
+          <select id="region-filter" [(ngModel)]="selectedRegionFilter" (change)="onRegionFilterChange()">
+            <option value="">-- Sélectionner une région --</option>
+            <option *ngFor="let region of availableRegions; let i = index" [value]="i">
+              {{ region.name }}
+            </option>
+          </select>
+          <input type="text" class="search-input" [(ngModel)]="regionSearchInput" 
+                 (keyup)="filterRegionsByInput()" placeholder="Rechercher une région...">
+        </div>
+      </div>
+      
+      <!-- Filtre cercle (activé uniquement si une région est sélectionnée) -->
+      <div class="filter-group" [class.disabled]="selectedRegionFilter === ''">
+        <label for="cercle-filter">Cercle</label>
+        <div class="filter-input-container">
+          <select id="cercle-filter" [(ngModel)]="selectedCercleFilter" 
+                  (change)="onCercleFilterChange()" [disabled]="selectedRegionFilter === ''">
+            <option value="">-- Sélectionner un cercle --</option>
+            <option *ngFor="let cercle of availableCercles; let i = index" [value]="i">
+              {{ cercle.name }}
+            </option>
+          </select>
+          <input type="text" class="search-input" [(ngModel)]="cercleSearchInput" 
+                 (keyup)="filterCerclesByInput()" placeholder="Rechercher un cercle..." 
+                 [disabled]="selectedRegionFilter === ''">
+        </div>
+      </div>
+      
+      <!-- Filtre commune (activé uniquement si un cercle est sélectionné) -->
+      <div class="filter-group" [class.disabled]="selectedCercleFilter === ''">
+        <label for="commune-filter">Commune</label>
+        <div class="filter-input-container">
+          <select id="commune-filter" [(ngModel)]="selectedCommuneFilter" 
+                  (change)="onCommuneFilterChange()" [disabled]="selectedCercleFilter === ''">
+            <option value="">-- Sélectionner une commune --</option>
+            <option *ngFor="let commune of availableCommunes; let i = index" [value]="i">
+              {{ commune.name }}
+            </option>
+          </select>
+          <input type="text" class="search-input" [(ngModel)]="communeSearchInput" 
+                 (keyup)="filterCommunesByInput()" placeholder="Rechercher une commune..." 
+                 [disabled]="selectedCercleFilter === ''">
+        </div>
+      </div>
+      
+      <!-- Filtre centre d'état civil (activé uniquement si une commune est sélectionnée) -->
+      <div class="filter-group" [class.disabled]="selectedCommuneFilter === ''">
+        <label for="center-filter">Centre d'état civil</label>
+        <div class="filter-input-container">
+          <select id="center-filter" [(ngModel)]="selectedCenterFilter" 
+                  (change)="onCenterFilterChange()" [disabled]="selectedCommuneFilter === ''">
+            <option value="">-- Sélectionner un centre --</option>
+            <option *ngFor="let center of availableCenters; let i = index" [value]="i">
+              {{ center.name }}
+            </option>
+          </select>
+          <input type="text" class="search-input" [(ngModel)]="centerSearchInput" 
+                 (keyup)="filterCentersByInput()" placeholder="Rechercher un centre..." 
+                 [disabled]="selectedCommuneFilter === ''">
+        </div>
+      </div>
+      
+      <!-- Coordonnées de l'utilisateur -->
+      <div class="coordinates-box">
+        <h3>Votre position</h3>
+        <div class="coordinates-display" *ngIf="userLatLng">
+          <div class="coordinate">
+            <span class="label">Latitude:</span>
+            <span class="value">{{userLatLng.lat.toFixed(6)}}</span>
+          </div>
+          <div class="coordinate">
+            <span class="label">Longitude:</span>
+            <span class="value">{{userLatLng.lng.toFixed(6)}}</span>
+          </div>
+        </div>
+        <div class="coordinates-display no-position" *ngIf="!userLatLng">
+          Position non disponible
+        </div>
+        <div class="tracking-toggle">
+          <label for="tracking-toggle">Suivi en temps réel</label>
+          <label class="toggle">
+            <input type="checkbox" id="tracking-toggle" [(ngModel)]="trackingEnabled" (change)="toggleLocationTracking()">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Boutons d'action -->
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="resetFilters()">
+          Réinitialiser les filtres
+        </button>
+        <button class="btn btn-secondary" (click)="clearRoute()" *ngIf="routingControl">
+          Effacer l'itinéraire
+        </button>
+      </div>
     </div>
   </div>

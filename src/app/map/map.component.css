@@ -5,38 +5,12 @@
     overflow: hidden;
   }
   
-  /* Panneau latéral */
-  .sidebar {
-    width: 350px;
-    height: 100%;
-    overflow-y: auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #dee2e6;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
-  }
-  
-  .sidebar h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #495057;
-    font-size: 1.5rem;
-  }
-  
-  .sidebar h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    color: #495057;
-    font-size: 1.2rem;
-    border-bottom: 1px solid #dee2e6;
-    padding-bottom: 8px;
-  }
-  
-  /* Conteneur de carte */
+  /* Conteneur de carte principal */
   .map-container {
     flex: 1;
     position: relative;
     height: 100%;
+    z-index: 1;
   }
   
   #map {
@@ -44,164 +18,130 @@
     width: 100%;
   }
   
-  /* Formulaires et contrôles */
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-control {
-    display: block;
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-  }
-  
-  .form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-  }
-  
-  /* Boutons */
-  .btn {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: background-color 0.2s;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0069d9;
-  }
-  
-  .btn-secondary {
-    background-color: #6c757d;
-    color: white;
-  }
-  
-  .btn-secondary:hover {
-    background-color: #5a6268;
-  }
-  
-  .btn-danger {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .btn-danger:hover {
-    background-color: #c82333;
-  }
-  
-  .btn-outline {
-    background-color: transparent;
-    border: 1px solid #6c757d;
-    color: #6c757d;
-  }
-  
-  .btn-outline:hover {
-    background-color: #f8f9fa;
-  }
-  
-  .btn-icon {
-    background: transparent;
-    border: none;
-    color: #6c757d;
-    cursor: pointer;
-    font-size: 1.1rem;
-    padding: 0 5px;
-  }
-  
-  .btn-icon:hover {
-    color: #dc3545;
-  }
-  
-  /* Autocomplétion */
-  .autocomplete-container {
-    position: relative;
-  }
-  
-  .autocomplete-results {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    max-height: 200px;
+  /* Panneau de filtrage (côté droit) */
+  .filter-panel {
+    width: 330px;
+    height: 100%;
     overflow-y: auto;
-    background-color: white;
-    border: 1px solid #ced4da;
-    border-top: none;
-    border-radius: 0 0 4px 4px;
-    z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .autocomplete-item {
-    padding: 8px 12px;
-    cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  
-  .autocomplete-item:hover {
+    padding: 20px;
     background-color: #f8f9fa;
+    border-left: 1px solid #dee2e6;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
+    z-index: 2;
   }
   
-  /* Historique */
-  .history-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 200px;
-    overflow-y: auto;
+  .filter-panel h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    text-align: center;
   }
   
-  .history-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
-  }
-  
-  .history-text {
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .history-item:hover {
-    background-color: #f8f9fa;
-  }
-  
-  .empty-history {
-    color: #6c757d;
-    font-style: italic;
-    padding: 10px 0;
-  }
-  
-  /* Toggle switch pour le suivi de localisation */
-  .toggle-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .filter-panel h3 {
+    margin-top: 25px;
     margin-bottom: 10px;
+    color: #34495e;
+    font-size: 1.1rem;
+  }
+  
+  /* Groupes de filtres */
+  .filter-group {
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .filter-group.disabled {
+    opacity: 0.6;
+    background-color: #f0f0f0;
+  }
+  
+  .filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95rem;
+  }
+  
+  .filter-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  /* Styles pour les select et input */
+  select, .search-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    width: 100%;
+    background-color: white;
+  }
+  
+  select:focus, .search-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  }
+  
+  select:disabled, .search-input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+  }
+  
+  /* Coordonnées de l'utilisateur */
+  .coordinates-box {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .coordinates-display {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+  }
+  
+  .coordinate {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .label {
+    font-weight: 600;
+    color: #34495e;
+  }
+  
+  .value {
+    font-family: 'Courier New', monospace;
+    color: #2980b9;
+  }
+  
+  .no-position {
+    text-align: center;
+    color: #e74c3c;
+    font-style: italic;
+  }
+  
+  /* Suivi en temps réel */
+  .tracking-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
   }
   
   .toggle {
@@ -242,15 +182,411 @@
   }
   
   input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #3498db;
   }
   
   input:checked + .slider:before {
     transform: translateX(26px);
   }
   
-  .coordinates-display {
-    margin-top: 10px;
-    color: #6c757d;
-    font-size: 0.85rem;
+  /* Boutons d'action */
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+  }
+  
+  .btn {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+  
+  .btn-primary {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2980b9;
+  }
+  
+  .btn-secondary {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Légende de la carte */
+  .map-legend {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    background-color: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .legend-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    text-align: center;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .region-color {
+    background-color: #4CAF50;
+  }
+  
+  .cercle-color {
+    background-color: #FFC107;
+  }
+  
+  .commune-color {
+    background-color: #F44336;
+  }
+  
+  .center-color {
+    background-color: #2196F3;
+  }
+  
+  /* Boutons de contrôle flottants */
+  .floating-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .control-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: white;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+  }
+  
+  .control-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .location-btn {
+    color: #3498db;
+  }
+  
+  .reset-btn {
+    color: #e74c3c;
+  }
+  
+  /* Animation pour l'effet oscillant des communes */
+  @keyframes commune-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(33, 150, 243, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0); }
+  }
+  
+  .commune-highlighted {
+    animation: commune-pulse 1.5s infinite;
+  }
+  
+  /* Styles pour les marqueurs personnalisés */
+  .custom-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+  }
+  
+  .custom-marker:hover {
+    transform: scale(1.1);
+  }
+
+  /* Ajoutez ces styles à votre fichier map.component.css */
+
+/* Animation de pulsation générique */
+@keyframes pulse-effect {
+    0% {
+      opacity: 0.8;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 0.8;
+      transform: scale(0.8);
+    }
+  }
+  
+  /* Classe pour l'effet de pulsation */
+  .pulse-effect {
+    animation: pulse-effect 2s ease-in-out infinite;
+    transform-origin: center;
+  }
+  
+  /* Animation de pulsation spécifique pour chaque niveau */
+  @keyframes region-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 20px rgba(76, 175, 80, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+  }
+  
+  @keyframes cercle-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(255, 193, 7, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+    }
+  }
+  
+  @keyframes commune-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+    }
+  }
+  
+  @keyframes center-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(33, 150, 243, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+    }
+  }
+  
+  /* Classes pour les marqueurs avec effets de pulsation */
+  .custom-marker.region-marker:hover div {
+    animation: region-pulse 1.5s infinite;
+  }
+  
+  .custom-marker.cercle-marker:hover div {
+    animation: cercle-pulse 1.5s infinite;
+  }
+  
+  .custom-marker.commune-marker:hover div {
+    animation: commune-pulse 1.5s infinite;
+  }
+  
+  .custom-marker.center-marker:hover div {
+    animation: center-pulse 1.5s infinite;
+  }
+  
+  /* Styles des cercles de pulsation pour chaque niveau */
+  .region-pulse-circle {
+    border-color: #4CAF50 !important;
+    animation: pulse-effect 2.5s infinite;
+  }
+  
+  .cercle-pulse-circle {
+    border-color: #FFC107 !important;
+    animation: pulse-effect 2s infinite;
+  }
+  
+  .commune-pulse-circle {
+    border-color: #F44336 !important;
+    animation: pulse-effect 1.8s infinite;
+  }
+  
+  .center-pulse-circle {
+    border-color: #2196F3 !important;
+    animation: pulse-effect 1.5s infinite;
+  }
+
+  /* Styles pour les effets de pulsation et d'explosion */
+
+/* Animation de pulsation pour le cercle d'effet */
+@keyframes pulse-effect {
+    0% {
+      transform: scale(0.95);
+      opacity: 0.8;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    70% {
+      transform: scale(1);
+      opacity: 0.5;
+      box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+    100% {
+      transform: scale(0.95);
+      opacity: 0.8;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+  
+  /* Animation pour l'effet d'explosion */
+  @keyframes explosion-effect {
+    0% {
+      transform: scale(0.1);
+      opacity: 0.9;
+    }
+    50% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
+  
+  /* Appliquer l'animation de pulsation aux cercles avec cette classe */
+  .pulse-effect {
+    animation: pulse-effect 2s infinite;
+  }
+  
+  /* Appliquer l'animation d'explosion aux cercles avec cette classe */
+  .explosion-effect {
+    animation: explosion-effect 1.5s;
+  }
+  
+  /* Animations spécifiques par niveau hiérarchique */
+  @keyframes region-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 20px rgba(76, 175, 80, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+  }
+  
+  @keyframes cercle-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(255, 193, 7, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+    }
+  }
+  
+  @keyframes commune-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(244, 67, 54, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+    }
+  }
+  
+  @keyframes center-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(33, 150, 243, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+    }
+  }
+  
+  /* Styles pour les marqueurs avec effet de survol */
+  .custom-marker div {
+    transition: all 0.3s ease;
+  }
+  
+  .custom-marker:hover div {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+  }
+  
+  /* Appliquer les animations spécifiques selon le type de marqueur */
+  .custom-marker.region-marker:hover div {
+    animation: region-pulse 1.5s infinite;
+  }
+  
+  .custom-marker.cercle-marker:hover div {
+    animation: cercle-pulse 1.5s infinite;
+  }
+  
+  .custom-marker.commune-marker:hover div {
+    animation: commune-pulse 1.5s infinite;
+  }
+  
+  .custom-marker.center-marker:hover div {
+    animation: center-pulse 1.5s infinite;
+  }
+  
+  /* Responsive design pour les petits écrans */
+  @media (max-width: 992px) {
+    .app-container {
+      flex-direction: column;
+    }
+    
+    .filter-panel {
+      width: 100%;
+      height: 40%;
+      border-left: none;
+      border-top: 1px solid #dee2e6;
+    }
+    
+    .map-container {
+      height: 60%;
+    }
   }
