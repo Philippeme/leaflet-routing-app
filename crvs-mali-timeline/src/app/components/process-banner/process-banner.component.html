@@ -1,0 +1,31 @@
+<!-- src/app/components/process-banner/process-banner.component.html -->
+<div class="process-banner" [style.background]="getBannerBackgroundStyle()"
+    [style.border-left]="getBannerBorderStyle()">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="banner-title">{{ getProcessTitle() }}</div>
+
+            <div class="banner-info">
+                <div class="info-section declaration-number">
+                    <span class="info-label">N° Déclaration :</span>
+                    <span class="info-value">{{ process.declarationNumber }}</span>
+                </div>
+
+                <div class="info-section nina-section">
+                    <span class="info-label">NINA :</span>
+                    <div class="nina-container">
+                        <div class="nina-box" *ngFor="let digit of formatNina(process.nina)">
+                            {{ digit }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="banner-right">
+            <div class="timeline-wrapper">
+                <app-timeline [process]="process"></app-timeline>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="process-display-container">
+  <div *ngIf="currentProcess" class="process-content">
+    <!-- Bannière du processus -->
+    <app-process-banner [process]="currentProcess"></app-process-banner>
+  </div>
+  
+  <div *ngIf="!currentProcess" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Chargement du processus...</p>
+  </div>
+</div>

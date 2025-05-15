@@ -1,0 +1,591 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "name": "CRVS Mali Timeline API Service - Static Mode",
+    "description": "Service JSON paramétré pour l'intégration avec l'API backend CRVS Mali - Mode statique sans interaction",
+    "createdDate": "2025-05-15",
+    "lastModified": "2025-05-15",
+    "documentation": "https://api.crvs-mali.gov.ml/docs"
+  },
+  "configuration": {
+    "apiBaseUrl": "${API_BASE_URL}",
+    "apiVersion": "v1",
+    "defaultLanguage": "fr",
+    "timezone": "Africa/Bamako",
+    "dateFormat": "DD/MM/YYYY",
+    "timeFormat": "HH:mm",
+    "staticMode": true,
+    "interactionsEnabled": false
+  },
+  "processTypes": {
+    "BIRTH": {
+      "id": "BIRTH",
+      "name": "Acte de Naissance",
+      "displayName": "Actes de Naissance",
+      "code": "ACTE_NAISSANCE",
+      "prefix": "N",
+      "icon": "child_care",
+      "color": "#2196f3",
+      "backgroundColor": "linear-gradient(135deg, #e3f2fd, #bbdefb)",
+      "borderColor": "#2196f3"
+    },
+    "MARRIAGE": {
+      "id": "MARRIAGE",
+      "name": "Acte de Mariage",
+      "displayName": "Actes de Mariage",
+      "code": "ACTE_MARIAGE",
+      "prefix": "M",
+      "icon": "favorite",
+      "color": "#e91e63",
+      "backgroundColor": "linear-gradient(135deg, #f8bbd0, #f48fb1)",
+      "borderColor": "#e91e63"
+    },
+    "DEATH": {
+      "id": "DEATH",
+      "name": "Acte de Décès",
+      "displayName": "Actes de Décès",
+      "code": "ACTE_DECES",
+      "prefix": "D",
+      "icon": "contact_emergency",
+      "color": "#757575",
+      "backgroundColor": "linear-gradient(135deg, #e1e1e1, #bdbdbd)",
+      "borderColor": "#757575"
+    }
+  },
+  "stepStatuses": {
+    "NOT_STARTED": {
+      "id": "NOT_STARTED",
+      "code": "PAS_COMMENCE",
+      "label": "Pas commencé",
+      "shortLabel": "Pas commencé",
+      "color": "#bdbdbd",
+      "borderColor": "#9e9e9e",
+      "lineColor": "#bdbdbd",
+      "icon": null,
+      "iconColor": "#ffffff",
+      "description": "L'étape n'a pas encore été initiée"
+    },
+    "IN_PROGRESS": {
+      "id": "IN_PROGRESS",
+      "code": "EN_COURS",
+      "label": "En cours",
+      "shortLabel": "En cours",
+      "color": "#ff9800",
+      "borderColor": "#f57c00",
+      "lineColor": "#ff9800",
+      "icon": "more_horiz",
+      "iconColor": "#ffffff",
+      "description": "L'étape est actuellement en cours d'exécution"
+    },
+    "COMPLETED": {
+      "id": "COMPLETED",
+      "code": "FAIT",
+      "label": "Fait",
+      "shortLabel": "Fait",
+      "color": "#4caf50",
+      "borderColor": "#388e3c",
+      "lineColor": "#4caf50",
+      "icon": "check",
+      "iconColor": "#ffffff",
+      "description": "L'étape a été complétée avec succès"
+    },
+    "CANCELLED": {
+      "id": "CANCELLED",
+      "code": "ANNULE",
+      "label": "Annulé",
+      "shortLabel": "Annulé",
+      "color": "#f44336",
+      "borderColor": "#d32f2f",
+      "lineColor": "#f44336",
+      "icon": "close",
+      "iconColor": "#ffffff",
+      "description": "L'étape a été annulée"
+    }
+  },
+  "processSteps": {
+    "BIRTH": [
+      {
+        "id": "enregistrement",
+        "code": "ENREGISTREMENT_NAISSANCE",
+        "order": 1,
+        "label": "Enregistrement de naissance",
+        "shortLabel": "Enregistrement",
+        "icon": "app_registration",
+        "description": "Enregistrement initial de la naissance dans le système",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "1-2 jours"
+      },
+      {
+        "id": "declaration",
+        "code": "DECLARATION_NAISSANCE",
+        "order": 2,
+        "label": "Déclaration de naissance",
+        "shortLabel": "Déclaration",
+        "icon": "description",
+        "description": "Déclaration officielle de la naissance",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "2-3 jours"
+      },
+      {
+        "id": "etablissement",
+        "code": "ETABLISSEMENT_ACTE_NAISSANCE",
+        "order": 3,
+        "label": "Établissement de l'acte",
+        "shortLabel": "Établissement",
+        "icon": "gavel",
+        "description": "Établissement officiel de l'acte de naissance",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "3-5 jours"
+      },
+      {
+        "id": "remise",
+        "code": "REMISE_ACTE_NAISSANCE",
+        "order": 4,
+        "label": "Remise de l'acte",
+        "shortLabel": "Remise",
+        "icon": "assignment_turned_in",
+        "description": "Remise de l'acte de naissance aux intéressés",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "1 jour"
+      }
+    ],
+    "MARRIAGE": [
+      {
+        "id": "declaration",
+        "code": "DECLARATION_MARIAGE",
+        "order": 1,
+        "label": "Déclaration de mariage",
+        "shortLabel": "Déclaration",
+        "icon": "favorite",
+        "description": "Déclaration d'intention de mariage",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "1 jour"
+      },
+      {
+        "id": "publication",
+        "code": "PUBLICATION_MARIAGE",
+        "order": 2,
+        "label": "Publication de mariage",
+        "shortLabel": "Publication",
+        "icon": "campaign",
+        "description": "Publication des bans de mariage",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "10 jours"
+      },
+      {
+        "id": "enquetes",
+        "code": "ENQUETES_PRENUPTIALES",
+        "order": 3,
+        "label": "Enquêtes prénuptiales",
+        "shortLabel": "Enquêtes",
+        "icon": "find_in_page",
+        "description": "Enquêtes et vérifications prénuptiales",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "5-7 jours"
+      },
+      {
+        "id": "celebration_remise",
+        "code": "CELEBRATION_REMISE_ACTE_MARIAGE",
+        "order": 4,
+        "label": "Célébration et Remise de l'acte",
+        "shortLabel": "Célébration",
+        "icon": "celebration",
+        "description": "Célébration du mariage et remise de l'acte",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "1 jour"
+      }
+    ],
+    "DEATH": [
+      {
+        "id": "certificat",
+        "code": "CERTIFICAT_DECES",
+        "order": 1,
+        "label": "Certificat de décès",
+        "shortLabel": "Certificat",
+        "icon": "medical_services",
+        "description": "Établissement du certificat médical de décès",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "1 jour"
+      },
+      {
+        "id": "declaration",
+        "code": "DECLARATION_DECES",
+        "order": 2,
+        "label": "Déclaration de décès",
+        "shortLabel": "Déclaration",
+        "icon": "description",
+        "description": "Déclaration officielle du décès",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "1-2 jours"
+      },
+      {
+        "id": "etablissement",
+        "code": "ETABLISSEMENT_ACTE_DECES",
+        "order": 3,
+        "label": "Établissement de l'acte",
+        "shortLabel": "Établissement",
+        "icon": "gavel",
+        "description": "Établissement officiel de l'acte de décès",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "2-3 jours"
+      },
+      {
+        "id": "remise",
+        "code": "REMISE_ACTE_DECES",
+        "order": 4,
+        "label": "Remise de l'acte",
+        "shortLabel": "Remise",
+        "icon": "assignment_turned_in",
+        "description": "Remise de l'acte de décès aux intéressés",
+        "isRequired": true,
+        "canSkip": false,
+        "estimatedDuration": "1 jour"
+      }
+    ]
+  },
+  "businessRules": {
+    "statusTransitions": {
+      "sequential": {
+        "description": "Les étapes doivent être complétées dans l'ordre séquentiel",
+        "enforced": true
+      },
+      "allowedTransitions": {
+        "NOT_STARTED": [
+          "IN_PROGRESS",
+          "COMPLETED",
+          "CANCELLED"
+        ],
+        "IN_PROGRESS": [
+          "COMPLETED",
+          "CANCELLED"
+        ],
+        "COMPLETED": [
+          "IN_PROGRESS",
+          "CANCELLED"
+        ],
+        "CANCELLED": [
+          "NOT_STARTED",
+          "IN_PROGRESS"
+        ]
+      }
+    },
+    "cascadeRules": {
+      "onCompleted": {
+        "action": "SET_SUBSEQUENT_TO_IN_PROGRESS",
+        "description": "Quand une étape est complétée, toutes les étapes suivantes deviennent 'En cours'"
+      },
+      "onCancelled": {
+        "action": "SET_SUBSEQUENT_TO_CANCELLED",
+        "description": "Quand une étape est annulée, toutes les étapes suivantes deviennent 'Annulées'"
+      },
+      "onInProgress": {
+        "action": "SET_SUBSEQUENT_NOT_COMPLETED_TO_NOT_STARTED",
+        "description": "Quand une étape est en cours, les étapes suivantes non complétées deviennent 'Pas commencé'"
+      },
+      "onNotStarted": {
+        "action": "SET_SUBSEQUENT_TO_NOT_STARTED",
+        "description": "Quand une étape redevient non commencée, toutes les étapes suivantes deviennent 'Pas commencé'"
+      }
+    }
+  },
+  "apiEndpoints": {
+    "baseUrl": "${API_BASE_URL}/api/v1",
+    "authentication": {
+      "type": "Bearer",
+      "header": "Authorization"
+    },
+    "processes": {
+      "getCurrentProcessByType": {
+        "method": "GET",
+        "path": "/processes/{type}/current",
+        "description": "Récupère le processus actuel pour un type donné",
+        "parameters": {
+          "type": "Path parameter - Type de processus (BIRTH, MARRIAGE, DEATH)"
+        },
+        "response": "ProcessData"
+      },
+      "getProcessHistory": {
+        "method": "GET",
+        "path": "/processes/{processId}/history",
+        "description": "Récupère l'historique d'un processus",
+        "parameters": {
+          "processId": "Path parameter - ID du processus"
+        },
+        "response": "ProcessHistory[]"
+      }
+    },
+    "lookup": {
+      "getProcessTypes": {
+        "method": "GET",
+        "path": "/lookup/process-types",
+        "description": "Récupère tous les types de processus",
+        "response": "ProcessType[]"
+      },
+      "getStepStatuses": {
+        "method": "GET",
+        "path": "/lookup/step-statuses",
+        "description": "Récupère tous les statuts d'étapes",
+        "response": "StepStatus[]"
+      }
+    }
+  },
+  "dataStructures": {
+    "ProcessData": {
+      "id": "string",
+      "type": "string",
+      "declarationNumber": "string",
+      "nina": "string",
+      "steps": "StepData[]",
+      "createdAt": "string (ISO 8601)",
+      "updatedAt": "string (ISO 8601)",
+      "metadata": "object"
+    },
+    "StepData": {
+      "id": "string",
+      "stepId": "string",
+      "order": "number",
+      "label": "string",
+      "icon": "string",
+      "status": "string",
+      "completionDate": "string (ISO 8601) | null",
+      "updatedBy": "string",
+      "comment": "string | null"
+    },
+    "ProcessHistory": {
+      "id": "string",
+      "processId": "string",
+      "stepId": "string",
+      "previousStatus": "string",
+      "newStatus": "string",
+      "changedAt": "string (ISO 8601)",
+      "changedBy": "string",
+      "comment": "string | null"
+    }
+  },
+  "scenarios": {
+    "BIRTH": {
+      "declarationNumber": "${DYNAMIC_DECLARATION_NUMBER_BIRTH}",
+      "nina": "${DYNAMIC_NINA_BIRTH}",
+      "steps": [
+        {
+          "stepId": "enregistrement",
+          "status": "COMPLETED",
+          "completionDate": "${DYNAMIC_DATE_BIRTH_1}"
+        },
+        {
+          "stepId": "declaration",
+          "status": "COMPLETED",
+          "completionDate": "${DYNAMIC_DATE_BIRTH_2}"
+        },
+        {
+          "stepId": "etablissement",
+          "status": "IN_PROGRESS",
+          "completionDate": null
+        },
+        {
+          "stepId": "remise",
+          "status": "NOT_STARTED",
+          "completionDate": null
+        }
+      ]
+    },
+    "MARRIAGE": {
+      "declarationNumber": "${DYNAMIC_DECLARATION_NUMBER_MARRIAGE}",
+      "nina": "${DYNAMIC_NINA_MARRIAGE}",
+      "steps": [
+        {
+          "stepId": "declaration",
+          "status": "COMPLETED",
+          "completionDate": "${DYNAMIC_DATE_MARRIAGE_1}"
+        },
+        {
+          "stepId": "publication",
+          "status": "COMPLETED",
+          "completionDate": "${DYNAMIC_DATE_MARRIAGE_2}"
+        },
+        {
+          "stepId": "enquetes",
+          "status": "CANCELLED",
+          "completionDate": null
+        },
+        {
+          "stepId": "celebration_remise",
+          "status": "CANCELLED",
+          "completionDate": null
+        }
+      ]
+    },
+    "DEATH": {
+      "declarationNumber": "${DYNAMIC_DECLARATION_NUMBER_DEATH}",
+      "nina": "${DYNAMIC_NINA_DEATH}",
+      "steps": [
+        {
+          "stepId": "certificat",
+          "status": "COMPLETED",
+          "completionDate": "${DYNAMIC_DATE_DEATH_1}"
+        },
+        {
+          "stepId": "declaration",
+          "status": "COMPLETED",
+          "completionDate": "${DYNAMIC_DATE_DEATH_2}"
+        },
+        {
+          "stepId": "etablissement",
+          "status": "COMPLETED",
+          "completionDate": "${DYNAMIC_DATE_DEATH_3}"
+        },
+        {
+          "stepId": "remise",
+          "status": "IN_PROGRESS",
+          "completionDate": null
+        }
+      ]
+    }
+  },
+  "validation": {
+    "nina": {
+      "pattern": "^[0-9]{15}$",
+      "message": "Le NINA doit contenir exactement 15 chiffres"
+    },
+    "declarationNumber": {
+      "pattern": "^[NMD]-\\d{4}-\\d{4}$",
+      "message": "Format: préfixe-année-numéro (ex: N-2025-0001)"
+    },
+    "stepOrder": {
+      "sequential": true,
+      "message": "Les étapes doivent être complétées dans l'ordre"
+    }
+  },
+  "errorCodes": {
+    "PROCESS_NOT_FOUND": {
+      "code": "PRO_001",
+      "message": "Processus non trouvé",
+      "httpStatus": 404
+    },
+    "STEP_NOT_FOUND": {
+      "code": "STP_001",
+      "message": "Étape non trouvée",
+      "httpStatus": 404
+    },
+    "VALIDATION_ERROR": {
+      "code": "VAL_001",
+      "message": "Erreur de validation des données",
+      "httpStatus": 400
+    },
+    "UNAUTHORIZED_ACCESS": {
+      "code": "AUTH_001",
+      "message": "Accès non autorisé",
+      "httpStatus": 401
+    },
+    "SERVER_ERROR": {
+      "code": "SRV_001",
+      "message": "Erreur interne du serveur",
+      "httpStatus": 500
+    }
+  },
+  "localization": {
+    "fr": {
+      "messages": {
+        "loading": "Chargement en cours...",
+        "noData": "Aucune donnée disponible",
+        "error": "Une erreur est survenue",
+        "processNotFound": "Processus non trouvé",
+        "stepCompleted": "Étape complétée",
+        "stepInProgress": "Étape en cours",
+        "stepCancelled": "Étape annulée",
+        "processStaticMode": "Mode statique activé - Affichage en lecture seule"
+      },
+      "labels": {
+        "declarationNumber": "N° Déclaration",
+        "nina": "NINA",
+        "currentStatus": "Statut actuel",
+        "completionDate": "Date de complétion",
+        "lastUpdate": "Dernière mise à jour",
+        "processType": "Type de processus",
+        "stepName": "Nom de l'étape",
+        "stepStatus": "Statut de l'étape"
+      }
+    }
+  },
+  "timelineConfiguration": {
+    "visual": {
+      "nodeSize": 36,
+      "compactNodeSize": 28,
+      "lineHeight": 4,
+      "iconSize": 18,
+      "spacing": "space-between",
+      "borderRadius": "50%",
+      "shadowBlur": 4
+    },
+    "animation": {
+      "duration": 300,
+      "easing": "ease-in-out",
+      "enableHover": false,
+      "hoverScale": 1.0
+    },
+    "interactions": {
+      "clickable": false,
+      "draggable": false,
+      "selectable": false
+    },
+    "responsive": {
+      "breakpoints": {
+        "mobile": 480,
+        "tablet": 768,
+        "desktop": 1024
+      },
+      "adjustments": {
+        "mobile": {
+          "nodeSize": 28,
+          "iconSize": 14,
+          "fontSize": "0.7rem"
+        },
+        "tablet": {
+          "nodeSize": 32,
+          "iconSize": 16,
+          "fontSize": "0.8rem"
+        }
+      }
+    }
+  },
+  "defaultValues": {
+    "staticData": {
+      "BIRTH": {
+        "declarationNumber": "N-2025-0001",
+        "nina": "123456789012345",
+        "dates": {
+          "step1": "2025-04-15T10:30:00Z",
+          "step2": "2025-04-18T14:20:00Z"
+        }
+      },
+      "MARRIAGE": {
+        "declarationNumber": "M-2025-0001",
+        "nina": "987654321098765",
+        "dates": {
+          "step1": "2025-04-10T11:00:00Z",
+          "step2": "2025-04-17T16:30:00Z"
+        }
+      },
+      "DEATH": {
+        "declarationNumber": "D-2025-0001",
+        "nina": "456789012345678",
+        "dates": {
+          "step1": "2025-04-12T13:45:00Z",
+          "step2": "2025-04-14T10:15:00Z",
+          "step3": "2025-04-20T15:00:00Z"
+        }
+      }
+    }
+  }
+}

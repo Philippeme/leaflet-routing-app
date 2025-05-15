@@ -1,0 +1,39 @@
+<div class="app-container">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <span class="app-title">{{title}}</span>
+  </mat-toolbar>
+
+  <div class="process-selector">
+    <mat-card>
+      <mat-card-content>
+        <div class="process-tabs">
+          <mat-tab-group animationDuration="300ms"
+            [selectedIndex]="selectedProcessType === processTypes.BIRTH ? 0 : selectedProcessType === processTypes.MARRIAGE ? 1 : 2"
+            (selectedIndexChange)="selectProcessType($event === 0 ? processTypes.BIRTH : $event === 1 ? processTypes.MARRIAGE : processTypes.DEATH)">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>child_care</mat-icon>
+                <span class="tab-label">Actes de Naissance</span>
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>favorite</mat-icon>
+                <span class="tab-label">Actes de Mariage</span>
+              </ng-template>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>contact_emergency</mat-icon>
+                <span class="tab-label">Actes de Décès</span>
+              </ng-template>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+
+        <!-- Affichage du processus sélectionné -->
+        <app-process-display [processType]="selectedProcessType"></app-process-display>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="timeline-container">
+    <div class="timeline">
+        <!-- Structure de base avec les étapes et jalons fixes -->
+        <div class="timeline-steps">
+            <div class="timeline-step" *ngFor="let step of steps; let i = index; let isLast = last">
+                <!-- Contenu au-dessus du jalon (icône + libellé) -->
+                <div class="step-content">
+                    <div class="step-header">
+                        <div class="step-icon">
+                            <mat-icon>{{ step.icon }}</mat-icon>
+                        </div>
+                        <div class="step-label">{{ step.label }}</div>
+                    </div>
+                </div>
+
+                <!-- Barre de progression -->
+                <div *ngIf="!isLast" class="step-connection-line" [ngClass]="getConnectionLineClass(i)"></div>
+
+                <!-- Jalon (sans interaction) -->
+                <div class="step-node-container">
+                    <div class="step-node" [ngClass]="getStepNodeClassMap(step)"
+                        [style.background-color]="getStepNodeStyles(step)['background-color']"
+                        [style.border-color]="getStepNodeStyles(step)['border-color']">
+                        <mat-icon *ngIf="step.status !== stepStatus.NOT_STARTED" class="step-status-icon">
+                            {{ getStepStatusIcon(step) }}
+                        </mat-icon>
+                    </div>
+
+                    <!-- Date (sous le jalon) -->
+                    <div *ngIf="step.completionDate" class="step-date">
+                        {{ step.completionDate | date:'dd/MM/yyyy' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

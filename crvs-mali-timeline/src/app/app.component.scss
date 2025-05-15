@@ -1,0 +1,58 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.app-toolbar {
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+    margin-bottom: 20px;
+    z-index: 10;
+}
+
+.app-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.process-selector {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.process-tabs {
+    margin-bottom: 20px;
+
+    .mat-tab-label {
+        height: 48px;
+    }
+
+    .tab-label {
+        margin-left: 8px;
+        font-weight: 500;
+    }
+}
+
+mat-card {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+mat-card-content {
+    padding: 16px;
+}
+
+@media (max-width: 768px) {
+    .process-selector {
+        width: 95%;
+        padding: 10px 0;
+    }
+
+    .tab-label {
+        font-size: 0.8rem;
+    }
+}
